@@ -60,6 +60,7 @@ public class LinkedGrid {
 		}
 		// display();
 		// diagnose();
+		
 		// Populating the Grid from a file
 
 		Scanner fileIn = new Scanner(new File("Sudoku.txt"));
@@ -84,7 +85,7 @@ public class LinkedGrid {
 
 	}
 
-	public void solve(Node currentNode, int number) {
+	public void solve(Node currentNode, int number) { // set possibilities false based on known number
 		currentNode.setSolution(number);
 
 		Node temp = currentNode.getUp();
@@ -171,6 +172,10 @@ public class LinkedGrid {
 
 		} while (choice != 0);
 
+	}
+	
+	public void cellElimination() {
+		
 	}
 
 }
