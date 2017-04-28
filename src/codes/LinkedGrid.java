@@ -174,7 +174,14 @@ public class LinkedGrid {
 
 	}
 	
-	public void cellElimination() {
+	public void firstSolutionMethod(Node currentNode) { // if node only has one possible solution, set solution to that number
+		if (currentNode.getSolution() == 0 && currentNode.numberOfPossibilities() == 1) {
+			for (int x = 0; x < 10; x++) {
+				if (currentNode.getPossible()[x] == true) {
+					solve(currentNode, x);
+				}
+			}
+		}
 		
 	}
 
