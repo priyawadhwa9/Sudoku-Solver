@@ -82,7 +82,6 @@ public class LinkedGrid {
 			rowMarker = rowMarker.getDown();
 		}
 		fileIn.close();
-
 	}
 
 	public void solve(Node currentNode, int number) { // set possibilities false based on known number
@@ -127,7 +126,7 @@ public class LinkedGrid {
 		}
 
 	}
-
+	
 	public void display() {
 		Node rowMarker = root;
 
@@ -145,7 +144,7 @@ public class LinkedGrid {
 			rowMarker = rowMarker.getDown();
 		}
 	}
-
+	
 	public void diagnose() {
 		Node temp = root;
 		int choice = 0;
@@ -179,10 +178,10 @@ public class LinkedGrid {
 			for (int x = 0; x < 10; x++) {
 				if (currentNode.getPossible()[x] == true) {
 					solve(currentNode, x);
+					break;
 				}
 			}
 		}
-		
 	}
 
 }
