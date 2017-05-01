@@ -38,6 +38,15 @@ public class Node {
 				counter++;
 		return counter;
 	}
+	public int getOnlyPossible()
+	{
+		
+		for(int x = 1; x < 10; x++)
+			if(possible[x] == true)
+				return x;
+		return 0;
+		
+	}
 	public boolean[] getPossible() {
 		return possible;
 	}

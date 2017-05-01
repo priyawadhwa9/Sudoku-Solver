@@ -2,6 +2,7 @@ package codes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LinkedGrid {
@@ -127,6 +128,28 @@ public class LinkedGrid {
 
 	}
 	
+	public boolean solveOnlyPossible()
+	{
+		Node temp = root;
+		Node rowMarker = root;
+		boolean solved = false;
+		while(rowMarker != null)
+		{
+			temp = rowMarker;
+			while(temp != null)
+			{
+				if(temp.countPossible() == 1)
+				{
+					solve(temp, temp.getOnlyPossible());
+					display();
+					System.out.println();
+				}
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+		}
+		return solved;
+	}
 	public void solveTwoRow(Node currentNode, Node exclude, int number) {
 
 		Node temp = currentNode.getLeft();
@@ -179,7 +202,7 @@ public class LinkedGrid {
 				{
 					while(temp != null && pair == false)
 					{
-						if(currentNode.getPossible() == temp.getPossible() && temp != currentNode)
+						if(Arrays.equals(currentNode.getPossible(), temp.getPossible()) && temp != currentNode)
 						{
 							pair = true;
 							boolean[] copy = new boolean[10];
@@ -199,6 +222,8 @@ public class LinkedGrid {
 							solveTwoRow(currentNode, temp, possible1);
 							solveTwoRow(currentNode, temp, possible2);
 							solved = true;
+							display();
+							System.out.println();
 						}
 						
 						temp = temp.getRight();
@@ -231,7 +256,7 @@ public class LinkedGrid {
 						{
 							while(temp != null && pair == false)
 							{
-								if(currentNode.getPossible() == temp.getPossible() && temp != currentNode)
+								if(Arrays.equals(currentNode.getPossible(), temp.getPossible()) && temp != currentNode)
 								{
 									pair = true;
 									boolean[] copy = new boolean[10];
@@ -251,6 +276,8 @@ public class LinkedGrid {
 									solveTwoColumn(currentNode, temp, possible1);
 									solveTwoColumn(currentNode, temp, possible2);
 									solved = true;
+									display();
+									System.out.println();
 								}
 								
 								temp = temp.getDown();

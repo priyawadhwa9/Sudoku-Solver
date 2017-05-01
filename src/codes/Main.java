@@ -7,15 +7,18 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		LinkedGrid lg = new LinkedGrid(9);
 		lg.display();
+		//lg.diagnose();
 		boolean continueSolving = false;
-		do
+		for(int x = 0; x < 20; x++)
 		{
-			continueSolving = lg.LogicOfTwoRow();
-		}while(continueSolving == true);
-		do
-		{
-			continueSolving = lg.LogicOfTwoColumn();
-		}while(continueSolving == true);
+			do
+			{
+				continueSolving = lg.solveOnlyPossible();
+				}while(continueSolving == true);
+			lg.LogicOfTwoColumn();
+			lg.LogicOfTwoRow();
+		}
+		
 		lg.diagnose();
 
 
