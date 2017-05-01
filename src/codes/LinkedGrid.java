@@ -126,22 +126,168 @@ public class LinkedGrid {
 		}
 
 	}
+	
+	public void solveTwoRow(Node currentNode, Node exclude, int number) {
 
+		Node temp = currentNode.getLeft();
+		while (temp != null) {
+			if(temp != exclude)
+				temp.setPossibilityFalse(number);
+			temp = temp.getLeft();
+		}
+
+		temp = currentNode.getRight();
+		while (temp != null) {
+			if(temp != exclude)
+				temp.setPossibilityFalse(number);
+			temp = temp.getRight();
+		}
+	}
+	
+	public void solveTwoColumn(Node currentNode, Node exclude, int number) {
+
+		Node temp = currentNode.getUp();
+		while (temp != null) {
+			if(temp != exclude)
+				temp.setPossibilityFalse(number);
+			temp = temp.getUp();
+		}
+
+		temp = currentNode.getDown();
+		while (temp != null) {
+			if(temp != exclude)
+				temp.setPossibilityFalse(number);
+			temp = temp.getDown();
+		}
+	}
+	public boolean LogicOfTwoRow()
+	{
+		//check row
+		Node rowMarker = root;
+		Node temp = root;
+		Node currentNode = root;
+		boolean pair = false;
+		boolean solved = false;
+		while(rowMarker != null)
+		{
+			currentNode = rowMarker;
+			while(currentNode != null)
+			{
+				pair = false;
+				temp = rowMarker;
+				if(currentNode.countPossible() == 2)
+				{
+					while(temp != null && pair == false)
+					{
+						if(currentNode.getPossible() == temp.getPossible() && temp != currentNode)
+						{
+							pair = true;
+							boolean[] copy = new boolean[10];
+							copy = currentNode.getPossible();
+							int possible1 = 0;
+							int possible2 = 0;
+							for(int x = 1; x < 10; x++)
+							{
+								if(copy[x] == true)
+									possible1 = x;
+							}
+							for(int x = 1; x < 10; x++)
+							{
+								if(copy[x] == true && x != possible1)
+									possible2 = x;
+							}
+							solveTwoRow(currentNode, temp, possible1);
+							solveTwoRow(currentNode, temp, possible2);
+							solved = true;
+						}
+						
+						temp = temp.getRight();
+					}
+					
+				}
+				currentNode = currentNode.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+		}
+		return solved;
+		
+	}
+	public boolean LogicOfTwoColumn()
+	{
+		
+				Node rowMarker = root;
+				Node temp = root;
+				Node currentNode = root;
+				boolean pair = false;
+				boolean solved = false;
+				while(rowMarker != null)
+				{
+					currentNode = rowMarker;
+					while(currentNode != null)
+					{
+						pair = false;
+						temp = rowMarker;
+						if(currentNode.countPossible() == 2)
+						{
+							while(temp != null && pair == false)
+							{
+								if(currentNode.getPossible() == temp.getPossible() && temp != currentNode)
+								{
+									pair = true;
+									boolean[] copy = new boolean[10];
+									copy = currentNode.getPossible();
+									int possible1 = 0;
+									int possible2 = 0;
+									for(int x = 1; x < 10; x++)
+									{
+										if(copy[x] == true)
+											possible1 = x;
+									}
+									for(int x = 1; x < 10; x++)
+									{
+										if(copy[x] == true && x != possible1)
+											possible2 = x;
+									}
+									solveTwoColumn(currentNode, temp, possible1);
+									solveTwoColumn(currentNode, temp, possible2);
+									solved = true;
+								}
+								
+								temp = temp.getDown();
+							}
+							
+						}
+						currentNode = currentNode.getDown();
+					}
+					rowMarker = rowMarker.getRight();
+				}
+				return solved;
+	}
+	public void LogicOfTwoBox()
+	{
+		
+	}
 	public void display() {
 		Node rowMarker = root;
-
-		while (rowMarker != null) {
+		int counter2 = 1;
+		while (rowMarker != null) 
+		{
 			Node temp = rowMarker;
-
-			while (temp != null) {
-				// System.out.print(temp.getBoxID()+ " ");//.getSolution() + "
-				// ");
+			int counter1 = 1;
+			
+			while (temp != null)
+			{
 				System.out.print(temp.getSolution() + " ");
-
 				temp = temp.getRight();
+				if(counter1 % 3 == 0)
+					System.out.print(" | ");
+				counter1++;
 			}
 			System.out.println();
 			rowMarker = rowMarker.getDown();
+			if(counter2 % 3 == 0)
+				System.out.println("--------------------------");
+			counter2++;
 		}
 	}
 

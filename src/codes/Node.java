@@ -29,6 +29,22 @@ public class Node {
 			System.out.println(x + ":" + possible[x]);
 		System.out.println();
 	}
+	
+	public int countPossible()
+	{
+		int counter = 0;
+		for(int x = 1; x < 10; x++)
+			if(possible[x] == true)
+				counter++;
+		return counter;
+	}
+	public boolean[] getPossible() {
+		return possible;
+	}
+
+	public void setPossible(boolean[] possible) {
+		this.possible = possible;
+	}
 
 	public int getBoxID() {
 		return boxID;
