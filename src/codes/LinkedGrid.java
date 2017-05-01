@@ -11,7 +11,7 @@ public class LinkedGrid {
 	private int dimension;
 
 	public LinkedGrid(int size) throws IOException {
-		int count = 1;
+		
 
 		// Creating the first node
 		this.dimension = size;
