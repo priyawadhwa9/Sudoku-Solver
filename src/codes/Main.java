@@ -12,17 +12,18 @@ public class Main {
 		int unsolved = 0;
 		while (lg.getSolvedCounter() < 82) {
 			unsolved = 0;
-			while (lg.getSolvedCounter() < 82 && unsolved < 10) {
+			while (lg.getSolvedCounter() < 82 && unsolved < 20) {
 				while (lg.solveOnlyPossible())
 					lg.solveOnlyPossible();
-				if (lg.LogicOfTwo() == false)
+				if (lg.LogicOfTwo() == false && lg.LogicOfThree() == false)
 					unsolved++;
 			}
+			lg.diagnose();
 			// if(lg.getSolvedCounter()<82)
 			// lg.guess();
 		}
 
-		// lg.diagnose();
+		
 
 	}
 
