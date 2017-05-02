@@ -29,24 +29,24 @@ public class Node {
 			System.out.println(x + ":" + possible[x]);
 		System.out.println();
 	}
-	
-	public int countPossible()
-	{
+
+	public int countPossible() {
 		int counter = 0;
-		for(int x = 1; x < 10; x++)
-			if(possible[x] == true)
+		for (int x = 1; x < 10; x++)
+			if (possible[x] == true)
 				counter++;
 		return counter;
 	}
-	public int getOnlyPossible()
-	{
-		
-		for(int x = 1; x < 10; x++)
-			if(possible[x] == true)
+
+	public int getOnlyPossible() {
+
+		for (int x = 1; x < 10; x++)
+			if (possible[x] == true)
 				return x;
 		return 0;
-		
+
 	}
+
 	public boolean[] getPossible() {
 		return possible;
 	}
