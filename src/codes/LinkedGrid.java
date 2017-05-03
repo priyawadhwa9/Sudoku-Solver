@@ -70,7 +70,6 @@ public class LinkedGrid {
 		while (rowMarker != null) {
 			temp = rowMarker;
 			while (temp != null) {
-
 				number = fileIn.nextInt();
 				if (number != 0)
 					solve(temp, number);
@@ -173,7 +172,7 @@ public class LinkedGrid {
 
 	}
 	
-	public void firstSolutionMethod(Node currentNode) { // if node only has one possible solution, set solution to that number
+	public void completeElimination(Node currentNode) { // if node only has one possible solution, set solution to that number
 		if (currentNode.getSolution() == 0 && currentNode.numberOfPossibilities() == 1) {
 			for (int x = 0; x < 10; x++) {
 				if (currentNode.getPossible()[x] == true) {
