@@ -47,6 +47,10 @@ public class Node {
 
 	}
 
+	public boolean getPossibleAt(int index) {
+		return possible[index];
+	}
+
 	public boolean[] getPossible() {
 		return possible;
 	}
@@ -66,16 +70,16 @@ public class Node {
 	public void setPossibilityFalse(int number) {
 		getPossible()[number] = false;
 	}
-	
+
 	public int numberOfPossibilities() {
 		int possibilities = 0;
-		
-		for(int x = 1; x < 10; x++) {
+
+		for (int x = 1; x < 10; x++) {
 			if (getPossible()[x] == true) {
 				possibilities++;
 			}
 		}
-		
+
 		return possibilities;
 	}
 

@@ -65,7 +65,7 @@ public class LinkedGrid {
 		}
 		// display();
 		// diagnose();
-		
+
 		// Populating the Grid from a file
 
 		Scanner fileIn = new Scanner(new File("Sudoku.txt"));
@@ -153,6 +153,111 @@ public class LinkedGrid {
 			rowMarker = rowMarker.getDown();
 		}
 		return solved;
+	}
+
+	public boolean solveByElimination() {
+		boolean solved = false;
+		Node rowMarker = root;
+		Node temp = root;
+		int possibleCounter = 0;
+		Node change = root;
+		// check row
+		for (int x = 1; x < 10; x++) {
+			rowMarker = root;
+			temp = root;
+			change = root;
+			while (rowMarker != null) {
+				possibleCounter = 0;
+				while (temp != null) {
+					if (temp.getSolution() == 0) {
+						if (temp.getPossibleAt(x) == true) {
+							possibleCounter++;
+							change = temp;
+
+						}
+					}
+					temp = temp.getRight();
+				}
+				if (possibleCounter == 1) {
+					solve(change, x);
+					solved = true;
+
+					System.out.println();
+				}
+
+				rowMarker = rowMarker.getDown();
+				temp = rowMarker;
+			}
+
+		}
+		// check column
+		temp = root;
+		rowMarker = root;
+		change = root;
+		for (int x = 1; x < 10; x++) {
+			rowMarker = root;
+			temp = root;
+			change = root;
+			while (rowMarker != null) {
+				possibleCounter = 0;
+				while (temp != null) {
+					if (temp.getSolution() == 0) {
+						if (temp.getPossibleAt(x) == true) {
+							possibleCounter++;
+							change = temp;
+
+						}
+					}
+					temp = temp.getDown();
+				}
+				if (possibleCounter == 1) {
+					solve(change, x);
+					solved = true;
+
+					System.out.println();
+				}
+
+				rowMarker = rowMarker.getRight();
+				temp = rowMarker;
+			}
+
+		}
+		// check box
+		temp = root;
+		rowMarker = root;
+		change = root;
+		int currentBoxId = 0;
+		for (int y = 1; y < 10; y++) {
+			currentBoxId = y;
+			for (int x = 1; x < 10; x++) {
+				possibleCounter = 0;
+				rowMarker = root;
+				temp = root;
+				change = root;
+				while (rowMarker != null) {
+					while (temp != null) {
+						if (temp.getSolution() == 0) {
+							if (temp.getPossibleAt(x) == true && temp.getBoxID() == currentBoxId) {
+								possibleCounter++;
+								change = temp;
+
+							}
+						}
+						temp = temp.getRight();
+					}
+					rowMarker = rowMarker.getDown();
+					temp = rowMarker;
+				}
+				if (possibleCounter == 1) {
+					solve(change, x);
+					solved = true;
+
+					System.out.println();
+				}
+			}
+		}
+		return solved;
+
 	}
 
 	public void solveTwoRow(Node currentNode, Node exclude, int number) {
@@ -284,8 +389,6 @@ public class LinkedGrid {
 							solveTwoRow(currentNode, temp, possible1);
 							solveTwoRow(currentNode, temp, possible2);
 							solved = true;
-							display();
-							System.out.println();
 						}
 
 						temp = temp.getRight();
@@ -325,8 +428,7 @@ public class LinkedGrid {
 							solveTwoColumn(currentNode, temp, possible1);
 							solveTwoColumn(currentNode, temp, possible2);
 							solved = true;
-							display();
-							System.out.println();
+
 						}
 
 						temp = temp.getDown();
@@ -369,8 +471,7 @@ public class LinkedGrid {
 								solveTwoBox(currentNode, temp, possible1);
 								solveTwoBox(currentNode, temp, possible2);
 								solved = true;
-								display();
-								System.out.println();
+
 							}
 							temp = temp.getRight();
 						}
@@ -427,8 +528,7 @@ public class LinkedGrid {
 									solveThreeRow(currentNode, temp, temp2, possible2);
 									solveThreeRow(currentNode, temp, temp2, possible3);
 									solved = true;
-									display();
-									System.out.println();
+
 								}
 								temp2 = temp2.getRight();
 							}
@@ -480,8 +580,7 @@ public class LinkedGrid {
 									solveThreeColumn(currentNode, temp, temp2, possible2);
 									solveThreeColumn(currentNode, temp, temp2, possible3);
 									solved = true;
-									display();
-									System.out.println();
+
 								}
 								temp2 = temp2.getDown();
 							}
@@ -512,39 +611,40 @@ public class LinkedGrid {
 						while (temp != null && match == false) {
 							if (Arrays.equals(currentNode.getPossible(), temp.getPossible()) && temp != currentNode
 									&& temp.getBoxID() == currentNode.getBoxID()) {
-								while (temp2 != null && match == false) {
-									temp2 = temp;
-									if (Arrays.equals(currentNode.getPossible(), temp2.getPossible())
-											&& temp2 != currentNode && temp2.getBoxID() == currentNode.getBoxID()) {
-										match = true;
-										boolean[] copy = new boolean[10];
-										copy = currentNode.getPossible();
-										int possible1 = 0;
-										int possible2 = 0;
-										int possible3 = 0;
-										for (int x = 1; x < 10; x++) {
-											if (copy[x] == true)
-												possible1 = x;
+								while (row2 != null && match == false) {
+									while (temp2 != null && match == false) {
+										temp2 = temp;
+										if (Arrays.equals(currentNode.getPossible(), temp2.getPossible())
+												&& temp2 != currentNode && temp2.getBoxID() == currentNode.getBoxID()) {
+											match = true;
+											boolean[] copy = new boolean[10];
+											copy = currentNode.getPossible();
+											int possible1 = 0;
+											int possible2 = 0;
+											int possible3 = 0;
+											for (int x = 1; x < 10; x++) {
+												if (copy[x] == true)
+													possible1 = x;
+											}
+											for (int x = 1; x < 10; x++) {
+												if (copy[x] == true && x != possible1)
+													possible2 = x;
+											}
+											for (int x = 1; x < 10; x++) {
+												if (copy[x] == true && x != possible1 && x != possible2)
+													possible3 = x;
+											}
+											solveThreeBox(currentNode, temp, temp2, possible1);
+											solveThreeBox(currentNode, temp, temp2, possible2);
+											solveThreeBox(currentNode, temp, temp2, possible3);
+											solved = true;
+
 										}
-										for (int x = 1; x < 10; x++) {
-											if (copy[x] == true && x != possible1)
-												possible2 = x;
-										}
-										for (int x = 1; x < 10; x++) {
-											if (copy[x] == true && x != possible1 && x != possible2)
-												possible3 = x;
-										}
-										solveThreeBox(currentNode, temp, temp2, possible1);
-										solveThreeBox(currentNode, temp, temp2, possible2);
-										solveThreeBox(currentNode, temp, temp2, possible3);
-										solved = true;
-										display();
-										System.out.println();
+										temp2 = temp2.getRight();
 									}
-									temp2 = temp2.getRight();
+									row2 = row2.getDown();
+									temp2 = row;
 								}
-								row2 = row2.getDown();
-								temp2 = row;
 							}
 							temp = temp.getRight();
 
@@ -560,7 +660,7 @@ public class LinkedGrid {
 		}
 		return solved;
 	}
-	
+
 	public void display() {
 		Node rowMarker = root;
 		int counter2 = 1;
@@ -582,7 +682,7 @@ public class LinkedGrid {
 			counter2++;
 		}
 	}
-	
+
 	public void diagnose() {
 		Node temp = root;
 		int choice = 0;
@@ -610,7 +710,7 @@ public class LinkedGrid {
 		} while (choice != 0);
 
 	}
-	
+
 	public void solvemethod1(Node currentNode) {
 		if (currentNode.getSolution() == 0 && currentNode.numberOfPossibilities() == 1) {
 			for (int x = 0; x < 10; x++) {
