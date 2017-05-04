@@ -30,6 +30,31 @@ public class Node {
 		System.out.println();
 	}
 
+	public int countPossible() {
+		int counter = 0;
+		for (int x = 1; x < 10; x++)
+			if (possible[x] == true)
+				counter++;
+		return counter;
+	}
+
+	public int getOnlyPossible() {
+
+		for (int x = 1; x < 10; x++)
+			if (possible[x] == true)
+				return x;
+		return 0;
+
+	}
+
+	public boolean[] getPossible() {
+		return possible;
+	}
+
+	public void setPossible(boolean[] possible) {
+		this.possible = possible;
+	}
+
 	public int getBoxID() {
 		return boxID;
 	}
@@ -95,14 +120,6 @@ public class Node {
 
 	public void setRight(Node right) {
 		this.right = right;
-	}
-
-	public boolean[] getPossible() {
-		return possible;
-	}
-
-	public void setPossible(boolean[] possible) {
-		this.possible = possible;
 	}
 
 }
