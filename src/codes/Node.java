@@ -12,7 +12,7 @@ public class Node {
 
 	public Node(int data) {
 		for (int x = 1; x < 10; x++)
-			getPossible()[x] = true;
+			possible[x] = true;
 
 		this.solution = data;
 		up = null;
@@ -20,13 +20,18 @@ public class Node {
 		left = null;
 		right = null;
 	}
-
+	public void reset()
+	{
+		for (int x = 1; x < 10; x++)
+			possible[x] = true;
+		this.solution = 0;
+	}
 	public void displayEverything() {
 		System.out.println("Solution:" + solution);
 		System.out.println("BoxID:" + boxID);
 		System.out.println("Possibilities:");
 		for (int x = 1; x < 10; x++)
-			System.out.println(x + ":" + getPossible()[x]);
+			System.out.println(x + ":" + possible[x]);
 		System.out.println();
 	}
 
@@ -47,12 +52,11 @@ public class Node {
 
 	}
 
-	public boolean getPossibleAt(int index) {
-		return possible[index];
-	}
-
 	public boolean[] getPossible() {
 		return possible;
+	}
+	public boolean getPossibleAt(int index){
+		return possible[index];
 	}
 
 	public void setPossible(boolean[] possible) {
@@ -68,19 +72,7 @@ public class Node {
 	}
 
 	public void setPossibilityFalse(int number) {
-		getPossible()[number] = false;
-	}
-
-	public int numberOfPossibilities() {
-		int possibilities = 0;
-
-		for (int x = 1; x < 10; x++) {
-			if (getPossible()[x] == true) {
-				possibilities++;
-			}
-		}
-
-		return possibilities;
+		possible[number] = false;
 	}
 
 	public int getSolution() {
@@ -90,8 +82,8 @@ public class Node {
 	public void setSolution(int data) {
 		this.solution = data;
 		for (int x = 0; x < 10; x++)// turn off all possibilities
-			getPossible()[x] = false;
-		getPossible()[data] = true;// turn on the possibility for the given data
+			possible[x] = false;
+		possible[data] = true;// turn on the possibility for the given data
 	}
 
 	public Node getUp() {

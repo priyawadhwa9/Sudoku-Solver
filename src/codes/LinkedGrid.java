@@ -9,14 +9,29 @@ public class LinkedGrid {
 
 	private Node root;
 	private int dimension;
-	private int solvedCounter;
+	
 
 	public int getSolvedCounter() {
+		int solvedCounter = 0;
+		Node temp = root;
+		Node rowMarker = root;
+		while(rowMarker != null)
+		{
+			while(temp != null)
+			{
+				if(temp.getSolution() != 0)
+					solvedCounter++;
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
 		return solvedCounter;
 	}
 
 	public LinkedGrid(int size) throws IOException {
-		solvedCounter = 0;
+
+		
 		// Creating the first node
 		this.dimension = size;
 		root = new Node(0);
@@ -65,7 +80,6 @@ public class LinkedGrid {
 		}
 		// display();
 		// diagnose();
-
 		// Populating the Grid from a file
 
 		Scanner fileIn = new Scanner(new File("Sudoku.txt"));
@@ -75,6 +89,7 @@ public class LinkedGrid {
 		while (rowMarker != null) {
 			temp = rowMarker;
 			while (temp != null) {
+
 				number = fileIn.nextInt();
 				if (number != 0)
 					solve(temp, number);
@@ -86,10 +101,107 @@ public class LinkedGrid {
 			rowMarker = rowMarker.getDown();
 		}
 		fileIn.close();
+
 	}
 
-	public void guess() {
-		System.out.println("we must make a guess");
+	public boolean checkLogic() {
+		boolean logic = true;
+		Node temp = root;
+		Node rowMarker = root;
+		while (rowMarker != null && logic == true) {
+			while (temp != null && logic == true) {
+				if (temp.countPossible() == 0)
+					logic = false;
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+		return logic;
+	}
+
+	public void restore(int[] board) {
+	
+		Node temp = root;
+		Node rowMarker = root;
+		while (rowMarker != null) {
+			while (temp != null) {
+				temp.reset();
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+		int index = 0;
+		temp = root;
+		rowMarker = root;
+		while (rowMarker != null) {
+			while (temp != null) {
+				if (board[index] != 0)
+					solve(temp, board[index]);
+				temp = temp.getRight();
+				index++;
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+	}
+
+	public int[] getBoard() {
+		int[] board = new int[81];
+		Node temp = root;
+		Node rowMarker = root;
+		int index = 0;
+		while (rowMarker != null) {
+			while (temp != null) {
+				board[index] = temp.getSolution();
+				index++;
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+		return board;
+	}
+
+	public Node getFirstAvailiable() {
+		Node temp = root;
+		Node rowMarker = root;
+		boolean found = false;
+
+		while (rowMarker != null && found == false) {
+			while (temp != null && found == false) {
+				if (temp.getSolution() == 0) {
+					found = true;
+					return temp;
+
+				}
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+		return null;
+	}
+
+	public int getGuess() {
+		Node temp = root;
+		Node rowMarker = root;
+		boolean found = false;
+		int guess = 0;
+		while (rowMarker != null && found == false) {
+			while (temp != null && found == false) {
+				if (temp.getSolution() == 0) {
+					found = true;
+					guess = temp.getOnlyPossible();
+
+				}
+				temp = temp.getRight();
+			}
+			rowMarker = rowMarker.getDown();
+			temp = rowMarker;
+		}
+		return guess;
 	}
 
 	public void solve(Node currentNode, int number) {
@@ -132,7 +244,8 @@ public class LinkedGrid {
 			rowMarker = rowMarker.getDown();
 			temp = rowMarker;
 		}
-		solvedCounter++;
+		//display();
+		
 
 	}
 
@@ -145,8 +258,7 @@ public class LinkedGrid {
 			while (temp != null) {
 				if (temp.countPossible() == 1 && temp.getSolution() == 0) {
 					solve(temp, temp.getOnlyPossible());
-					display();
-					System.out.println();
+
 				}
 				temp = temp.getRight();
 			}
@@ -182,7 +294,7 @@ public class LinkedGrid {
 					solve(change, x);
 					solved = true;
 
-					System.out.println();
+					
 				}
 
 				rowMarker = rowMarker.getDown();
@@ -214,7 +326,7 @@ public class LinkedGrid {
 					solve(change, x);
 					solved = true;
 
-					System.out.println();
+					
 				}
 
 				rowMarker = rowMarker.getRight();
@@ -252,7 +364,7 @@ public class LinkedGrid {
 					solve(change, x);
 					solved = true;
 
-					System.out.println();
+					
 				}
 			}
 		}
@@ -681,6 +793,7 @@ public class LinkedGrid {
 				System.out.println("--------------------------");
 			counter2++;
 		}
+		System.out.println();
 	}
 
 	public void diagnose() {
@@ -706,20 +819,11 @@ public class LinkedGrid {
 				temp = temp.getLeft();
 			else if (choice == 6)
 				temp = temp.getRight();
+			else if (choice == 0)
+				return;
 
 		} while (choice != 0);
 
-	}
-
-	public void solvemethod1(Node currentNode) {
-		if (currentNode.getSolution() == 0 && currentNode.numberOfPossibilities() == 1) {
-			for (int x = 0; x < 10; x++) {
-				if (currentNode.getPossible()[x] == true) {
-					solve(currentNode, x);
-					break;
-				}
-			}
-		}
 	}
 
 }
