@@ -1,2 +1,2 @@
 # Sudoku-Solver
-CompSci 3 Sudoku solver
+A program to solve any single solution sudoku puzzle from a text file input
